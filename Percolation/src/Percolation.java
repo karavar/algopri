@@ -3,6 +3,7 @@ public class Percolation {
   private boolean[][] grid; // false = blocked, true = open.
   WeightedQuickUnionUF wuf;
   int gridSize;
+  int NN;
  
   public Percolation(int N)               // create N-by-N grid, with all sites blocked {
   {	  
@@ -13,7 +14,8 @@ public class Percolation {
    	  else
    	  {
 		  gridSize = N;
-	   	  wuf = new WeightedQuickUnionUF(N*N + 2); // creates a Union Find Data structure with NxN + 2 virtual  nodes
+		  NN = N*N;
+	   	  wuf = new WeightedQuickUnionUF(NN+2); // creates a Union Find Data structure with NxN + 2 virtual nodes
 	   	  grid = new boolean[N][N];
 	   	  
 	   	  for(int i=0;i<N;i++)
@@ -49,40 +51,54 @@ public class Percolation {
 		 // mark the spot to be open.
 		 grid[i-1][j-1] = true; 
 		 // perform union operations on the neighboring elements		 
-		 int p = ijtok(i,j);
-		 
-		 int q = ijtok(i-1,j);
-		 
+		 int p = ijtok(i,j);		 
+		 //up
+		 int q = ijtok(i-1,j);		 
 		 if(q!=-1) 
 		 { 
-			 wuf.union(p, q);
-		 }		 
+			if(isOpen(i-1,j))
+			{ 
+				wuf.union(p, q);
+			}
+		 }	
+		 //down
 		 q = ijtok(i+1,j);
 		 if(q!=-1) 
 		 { 
-			 wuf.union(p, q);
+			 if(isOpen(i+1,j))
+			 {
+				wuf.union(p, q); 
+			 }			 
 		 }
 		 
+		 //left
 		 q = ijtok(i,j-1);
 		 if(q!=-1) 
 		 { 
-			 wuf.union(p, q);
-		 }		 
+			 if(isOpen(i,j-1))
+			 {
+				 wuf.union(p, q);
+			 }
+		 }		
+		 
+		 //right		 
 		 q = ijtok(i,j+1);
 		 if(q!=-1) 
 		 { 
-			 wuf.union(p, q);
+			 if(isOpen(i,j+1))
+			 {
+				 wuf.union(p, q);	 
+			 }			 
 		 }
 		 
 		 if(i==1)
 		 {
-			 wuf.union(p, (gridSize*gridSize));
-			 System.out.println("p is "+ p);
+			 wuf.union(p, NN);	 
 		 }
 		 
 		 if(i==gridSize)
 		 {
-			 wuf.union(p, (gridSize*gridSize+1));
+			 wuf.union(p, (NN+1));
 		 }
 	 }	 
  
@@ -90,6 +106,7 @@ public class Percolation {
  
  public boolean isOpen(int i, int j) // is site (row i, column j) open?
  {
+	 
 	 return grid[i-1][j-1];  
  } 
  
