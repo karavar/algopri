@@ -1,10 +1,9 @@
 
 public class Percolation { 
- 
- private boolean[][] grid; // false = blocked, true = open.
+  private boolean[][] grid; // false = blocked, true = open.
   WeightedQuickUnionUF wuf;
   int gridSize;
-  
+ 
   public Percolation(int N)               // create N-by-N grid, with all sites blocked {
   {	  
    	  if(N<=0)
@@ -13,36 +12,27 @@ public class Percolation {
    	  }
    	  else
    	  {
-	  gridSize = N;
-   	  wuf = new WeightedQuickUnionUF(N*N + 2); // creates a Union Find Data structure with NxN nodes
-   	  grid = new boolean[N][N];
-   	  
-   	  for(int i=0;i<N;i++)
-   	  {   		  
-   		  for(int j=0;j<N;j++)
-   		  {
-   			  grid[i][j] = false;
-   		  }
-   	  }
-   	  
-   	  int NN = N*N; // N squared.
-   	  for(int j=0;j<N;j++)
-   	  {
-   		  wuf.union(j,NN); // connect top nodes to a virtual node
-   		  wuf.union(ijtok(N,j+1), NN+1); // connect bottom nodes to 2nd virtual nodes
-   	  }  	  
-
-   	  
+		  gridSize = N;
+	   	  wuf = new WeightedQuickUnionUF(N*N + 2); // creates a Union Find Data structure with NxN + 2 virtual  nodes
+	   	  grid = new boolean[N][N];
+	   	  
+	   	  for(int i=0;i<N;i++)
+	   	  {   		  
+	   		  for(int j=0;j<N;j++)
+	   		  {
+	   			  grid[i][j] = false;
+	   		  }
+	   	  }   	  
+	   	   	  
    	  }
   }
   
-  public int ijtok(int i,int j)
+  private int ijtok(int i,int j)
   {
 	  if (i<1 || j<1 || i>gridSize ||j>gridSize)
 	  { 
 		  return -1;
 	  }
-	  
 	  return (i-1)*gridSize + (j-1);
   }  
   
@@ -50,26 +40,23 @@ public class Percolation {
  public void open(int i, int j) // open site (row i, column j) if it is not open already
  {
 	// open a site at i,j => create a union of (i-1,j), (i+1,j) (i,j-1),(i,j+1)
-	 if(i >= gridSize || i<1 || j>= gridSize || j<1)
+	 if(i > gridSize || i<1 || j> gridSize || j<1)
 	 {
 		 throw new ArrayIndexOutOfBoundsException();
 	 }
 	 else
 	 {
-		 // mark the grid to be open.
+		 // mark the spot to be open.
 		 grid[i-1][j-1] = true; 
-		 
-		 
 		 // perform union operations on the neighboring elements		 
-		 int p = ijtok(i,j);		 
+		 int p = ijtok(i,j);
 		 
-		 int q;
-		 q = ijtok(i-1,j);
+		 int q = ijtok(i-1,j);
+		 
 		 if(q!=-1) 
 		 { 
 			 wuf.union(p, q);
-		 }
-		 
+		 }		 
 		 q = ijtok(i+1,j);
 		 if(q!=-1) 
 		 { 
@@ -80,16 +67,25 @@ public class Percolation {
 		 if(q!=-1) 
 		 { 
 			 wuf.union(p, q);
-		 }
-		 
+		 }		 
 		 q = ijtok(i,j+1);
 		 if(q!=-1) 
 		 { 
 			 wuf.union(p, q);
-		 }	 
+		 }
 		 
+		 if(i==1)
+		 {
+			 wuf.union(p, (gridSize*gridSize));
+			 System.out.println("p is "+ p);
+		 }
+		 
+		 if(i==gridSize)
+		 {
+			 wuf.union(p, (gridSize*gridSize+1));
+		 }
 	 }	 
-	   
+ 
  }
  
  public boolean isOpen(int i, int j) // is site (row i, column j) open?
@@ -106,15 +102,7 @@ public class Percolation {
  
  public boolean percolates()   // does the system percolate?
  {
-	 int NN = gridSize*gridSize;
+	int NN = gridSize*gridSize;
     return wuf.connected(NN,NN+1);
+ }  
  }
- 
- public static void main(String[] args)
- {
-	 Percolation p = new Percolation(4);	 
-	 p.wuf.union(0, 10); 
- }
- 
-
-}
