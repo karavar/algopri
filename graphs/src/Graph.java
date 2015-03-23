@@ -72,7 +72,7 @@ public class Graph implements GraphAPI {
 				}
 			}
 		}
-		return count / 2; // each edge counted twice
+		return (count / 2); // each edge counted twice
 	}
 
 	@Override
@@ -100,7 +100,9 @@ public class Graph implements GraphAPI {
 		// TODO Auto-generated method stub
 		int edgeCount = 0;
 
-		return edgeCount;
+		for (int v = 0; v < this.V; v++) {
+			edgeCount += this.adj[v].size();
+		}
+		return (edgeCount / 2);
 	}
-
 }
