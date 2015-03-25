@@ -11,6 +11,8 @@ public class DepthFirstPaths {
 		marked = new boolean[G.V()];
 		edgeTo = new int[G.V()];
 		this.s = 0;
+		System.out.println("S is "+ this.s);	
+		
 		dfs(G, s);
 	}
 
