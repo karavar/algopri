@@ -1,4 +1,4 @@
-public interface GraphAPI {
+public interface DigraphAPI {
 
 	void addEdge(int v, int w); // add edge v-w
 
@@ -9,5 +9,7 @@ public interface GraphAPI {
 	int E(); // number of edges
 
 	String toString(); // string representation
+
+	public Digraph reverse(); // returns the reverse of a graph.
 
 }

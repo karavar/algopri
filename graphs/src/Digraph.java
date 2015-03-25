@@ -1,11 +1,11 @@
-public class Graph implements GraphAPI {
-	// This is an adjacency-list implementation of a Graph.
+public class Digraph implements DigraphAPI {
+	// This is an adjacency-list implementation of a Digraph.
 
-	private final int V;
+	private final int V; // number of nodes in the digraph
 	private Bag<Integer>[] adj;
 
 	@SuppressWarnings("unchecked")
-	Graph(int V) // create an empty graph with V vertices
+	Digraph(int V) // create an empty graph with V vertices
 	{
 		// set graph size.
 		this.V = V;
@@ -18,7 +18,7 @@ public class Graph implements GraphAPI {
 	}
 
 	@SuppressWarnings("unchecked")
-	Graph(In in) {
+	Digraph(In in) {
 		// set graph size.
 		this.V = in.readInt();
 		// instantiate adj-list bag
@@ -38,7 +38,7 @@ public class Graph implements GraphAPI {
 	}
 
 	@SuppressWarnings("unused")
-	public static int degree(Graph G, int v) {
+	public static int degree(Digraph G, int v) {
 		int degree = 0;
 		for (int w : G.adj(v)) {
 			degree++;
@@ -46,7 +46,7 @@ public class Graph implements GraphAPI {
 		return degree;
 	}
 
-	public static int maxDegree(Graph G) {
+	public static int maxDegree(Digraph G) {
 		int maxDegree = 0;
 		int vertices = G.V();
 		for (int v = 0; v < vertices; v++) {
@@ -58,11 +58,11 @@ public class Graph implements GraphAPI {
 		return maxDegree;
 	}
 
-	public static double averageDegree(Graph G) {
+	public static double averageDegree(Digraph G) {
 		return 2.0 * G.E() / G.V();
 	}
 
-	public static int numberOfSelfLoops(Graph G) {
+	public static int numberOfSelfLoops(Digraph G) {
 		int count = 0;
 		int vertices = G.V();
 		for (int v = 0; v < vertices; v++) {
@@ -79,7 +79,7 @@ public class Graph implements GraphAPI {
 	public void addEdge(int v, int w) {
 		// TODO Auto-generated method stub
 		adj[v].add(w);
-		adj[w].add(v);
+		//adj[w].add(v); not required for digraph.
 
 	}
 
@@ -99,10 +99,16 @@ public class Graph implements GraphAPI {
 	public int E() {
 		// TODO Auto-generated method stub
 		int edgeCount = 0;
-
 		for (int v = 0; v < this.V; v++) {
 			edgeCount += this.adj[v].size();
 		}
-		return (edgeCount / 2);
+		return (edgeCount);
+	}
+
+	@Override
+	public Digraph reverse() {
+		// TODO Auto-generated method stub		
+		
+		return null;
 	}
 }

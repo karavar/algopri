@@ -4,6 +4,7 @@ public class GraphClient {
 		// TODO Auto-generated method stub
 		In in = new In(args[0]);
 		Graph G = new Graph(in);
+		//Digraph DG = new
 
 		StdOut.println("# of edges = " + G.E());
 
